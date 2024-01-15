@@ -14,7 +14,7 @@
     - name: Set file permissions
       file:
         path: /tmp/spec-report.sh
-        mode: "+x"
+        mode: "644"
       when: fetch_result.changed
 
     - name: Execute bash file
