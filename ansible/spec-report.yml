@@ -16,7 +16,6 @@
         path: /tmp/spec-report.sh
         mode: "+x"
       when: fetch_result.changed
-    
 
     - name: Execute bash file
       shell: /tmp/spec-report.sh
