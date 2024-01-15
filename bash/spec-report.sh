@@ -25,8 +25,8 @@ total_used_memory=$(docker stats --no-stream --format "{{.MemUsage}}" $(docker p
 
 echo "Total Used Memory: ${total_used_memory}"
 
-# Get total used storage
-total_used_storage=$(docker system df --format "{{.Size}}" | awk 'NR==1 {print $3}')
+# Get total used storage of system /dev/mapper/ubuntu--vg-ubuntu--lv
+total_used_storage=$(df -h | grep -oP "^.*\/dev\/mapper\/ubuntu--vg-ubuntu--lv.*$" | awk '{print $3}')
 
 echo "Total Used Storage: ${total_used_storage}"
 
