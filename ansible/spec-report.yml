@@ -1,5 +1,5 @@
 - name: Execute bash file and output content
-  hosts: localhost
+  hosts: all
   gather_facts: false
 
   tasks:
