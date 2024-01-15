@@ -5,17 +5,13 @@
   tasks:
 
     - name: Fetch bash file
-      fetch:
+      copy:
         src: ../bash/spec-report.sh
         dest: /tmp/spec-report.sh
-        flat: yes
+        mode: 0644
       register: fetch_result
 
-    - name: Set file permissions
-      file:
-        path: /tmp/spec-report.sh
-        mode: "644"
-      when: fetch_result.changed
+
 
     - name: Execute bash file
       shell: bash /tmp/spec-report.sh > /tmp/spec-report.txt
