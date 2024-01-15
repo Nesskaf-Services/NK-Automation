@@ -18,10 +18,12 @@
       when: fetch_result.changed
 
     - name: Execute bash file
-      shell: bash /tmp/spec-report.sh
-      register: bash_output
+      shell: bash /tmp/spec-report.sh > /tmp/spec-report.txt
+      when: fetch_result.changed
 
-    - name: Output bash file content
-      copy:
-        content: "{{ bash_output.stdout }}"
-        dest: "/path/to/output/file/{{ inventory_hostname }}.txt"
+    - name: Output content to file on Ansible controller
+      fetch:
+        src: /tmp/spec-report.txt
+        dest: ./{{ inventory_hostname }}-spec-report.txt
+        flat: yes
+      when: fetch_result.changed
