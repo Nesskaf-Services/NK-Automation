@@ -18,7 +18,7 @@
       when: fetch_result.changed
 
     - name: Execute bash file
-      shell: /tmp/spec-report.sh
+      shell: bash /tmp/spec-report.sh
       register: bash_output
 
     - name: Output bash file content
