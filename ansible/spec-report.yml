@@ -3,7 +3,14 @@
   gather_facts: false
 
   tasks:
-
+    - name: Apt update
+      apt:
+        update_cache: yes
+      become: true
+    - name: Install dependencies
+      apt:
+        name: ['curl', 'jq', 'figlet']
+        state: present
     - name: Fetch bash file
       copy:
         src: ../bash/spec-report.sh
