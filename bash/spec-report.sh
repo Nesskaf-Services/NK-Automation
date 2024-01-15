@@ -15,7 +15,7 @@ total_ram=$(free -m | awk '/^Mem:/{print $2}')
 
 echo "Total RAM: ${total_ram}MB"
 
-# Get total storage
+# Get total storage of root
 total_storage=$(df -h | grep -oP "^.*\/dev\/mapper\/ubuntu--vg-ubuntu--lv.*$" | awk '{print $2}')
 
 echo "Total Storage: ${total_storage}"
@@ -53,13 +53,13 @@ for container_id in $container_ids; do
     # Get container memory usage
     mem_usage=$(docker stats --no-stream --format "table {{.MemUsage}}" $container_id | tail -n 1)
 
-    # Get storage usage of container
-    storage_usage=$(docker inspect --format='{{json .GraphDriver.Data}}' $container_id | jq -r '.DeviceSize')
+    # # Get storage usage of container
+    # storage_usage=$(docker inspect --format='{{json .GraphDriver.Data}}' $container_id | jq -r '.DeviceSize')
 
     # Print the results
     echo "Container: $container_name"
     echo "CPU Usage: $cpu_usage"
     echo "Memory Usage: $mem_usage"
-    echo "Storage Usage: $storage_usage"
+    # echo "Storage Usage: $storage_usage"
     echo "-----------------------"
 done
