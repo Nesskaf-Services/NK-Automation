@@ -23,10 +23,6 @@ total_storage=$(echo "scale=2; $total_bytes / (1024 * 1024 * 1024)" | bc)
 
 echo "Total Storage: ${total_storage}GB (root)"
 
-# Get total used memory
-total_used_memory=$(docker stats --no-stream --format "{{.MemUsage}}" $(docker ps -q) | awk '{sum += $1} END {print sum}')
-
-echo "Total Used Memory: ${total_used_memory}"
 
 # Get total used storage
 total_bytes_used=$(df --block-size=1 / | awk 'NR==2 {print $3}')
