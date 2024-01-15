@@ -21,9 +21,9 @@
       shell: bash /tmp/spec-report.sh > /tmp/spec-report.txt
       when: fetch_result.changed
 
-    - name: Output content to file on Ansible controller
+    - name: Output content to file on Ansible controller from remote host
       fetch:
         src: /tmp/spec-report.txt
-        dest: ./{{ inventory_hostname }}-spec-report.txt
+        dest: ../{{ inventory_hostname }}-spec-report.txt
         flat: yes
       when: fetch_result.changed
