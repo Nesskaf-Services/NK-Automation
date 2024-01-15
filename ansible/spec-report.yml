@@ -1,0 +1,21 @@
+- name: Execute bash file and output content
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+
+    - name: Fetch bash file
+      fetch:
+        src: ../bash/spec-report.sh
+        dest: /tmp/spec-report.sh
+        flat: yes
+        mode: 0755
+
+    - name: Execute bash file
+      shell: /tmp/spec-report.sh
+      register: bash_output
+
+    - name: Output bash file content
+      copy:
+        content: "{{ bash_output.stdout }}"
+        dest: "/path/to/output/file/{{ inventory_hostname }}.txt"
