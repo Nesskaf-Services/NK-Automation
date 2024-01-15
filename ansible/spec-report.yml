@@ -9,7 +9,14 @@
         src: ../bash/spec-report.sh
         dest: /tmp/spec-report.sh
         flat: yes
-        mode: 0755
+      register: fetch_result
+
+    - name: Set file permissions
+      file:
+        path: /tmp/spec-report.sh
+        mode: "+x"
+      when: fetch_result.changed
+    
 
     - name: Execute bash file
       shell: /tmp/spec-report.sh
