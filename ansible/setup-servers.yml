@@ -1,0 +1,63 @@
+---
+- name: Setup server
+  hosts: all
+  become: yes
+
+  vars:
+    docker_convenience_script: curl -fsSL get.docker.com | sh
+    user: nk # Replace with the actual username
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install dependencies
+      apt:
+        name: 
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Install Docker using convenience script
+      shell: "{{ docker_convenience_script }}"
+
+    - name: Add user to the docker group
+      user:
+        name: "{{ user }}"
+        groups: docker
+        append: yes
+
+    - name: Disable SSH password login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+        state: present
+
+    - name: Restart SSH service
+      service:
+        name: ssh
+        state: restarted
+
+    - name: Allow users to use sudo without password
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%sudo'
+        line: '%sudo ALL=(ALL:ALL) NOPASSWD:ALL'
+
+    - name: Install QEMU guest agent
+      apt:
+        name: qemu-guest-agent
+        state: present
+
+    - name: Ensure QEMU guest agent is running
+      service:
+        name: qemu-guest-agent
+        state: started
+        enabled: yes
+    - name: Reboot machine and send a message
+      ansible.builtin.reboot:
