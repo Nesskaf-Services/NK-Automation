@@ -90,5 +90,5 @@
         name: qemu-guest-agent
         state: started
         enabled: yes
-    - name: Reboot machine and send a message
-      ansible.builtin.reboot:
+    # - name: Reboot machine and send a message
+    #   ansible.builtin.reboot:
