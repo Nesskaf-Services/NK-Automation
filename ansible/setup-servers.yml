@@ -3,6 +3,7 @@
   hosts: all
   become: yes
   become_user: root
+  become_method: sudo
 
   vars:
     docker_convenience_script: curl -fsSL get.docker.com | sh
