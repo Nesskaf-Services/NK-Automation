@@ -43,7 +43,7 @@
     - name: Install fastfetch
       apt:
         deb: /tmp/fastfetch-linux-amd64.deb
-      state: present
+        state: present
     - name: Check if Docker is already installed
       stat:
         path: /usr/bin/docker
