@@ -12,17 +12,46 @@
       apt:
         update_cache: yes
 
-    - name: Install dependencies
+    - name: Install dependencies and tools
       apt:
         name: 
           - apt-transport-https
           - ca-certificates
           - curl
           - software-properties-common
+          - neovim
+          - htop
+          - tmux
+          - jq
         state: present
+  
+    - name: Get latest release info from GitHub for fastfetch
+      uri:
+        url: https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest
+        return_content: yes
+      register: latest_release_info
 
+    - name: Set fastfetch download URL
+      set_fact:
+        fastfetch_download_url: "{{ latest_release_info.json.assets | selectattr('name', 'equalto', 'fastfetch-linux-amd64.deb') | map(attribute='browser_download_url') | first }}"
+
+    - name: Download fastfetch
+      get_url:
+        url: "{{ fastfetch_download_url }}"
+        dest: /tmp/fastfetch-linux-amd64.deb
+
+    - name: Install fastfetch
+      apt:
+        deb: /tmp/fastfetch-linux-amd64.deb
+      state: present
+    - name: Check if Docker is already installed
+      stat:
+        path: /usr/bin/docker
+      register: docker_installed
+  
     - name: Install Docker using convenience script
       shell: "{{ docker_convenience_script }}"
+      when: not docker_installed.stat.exists
 
     - name: Add user to the docker group
       user:
