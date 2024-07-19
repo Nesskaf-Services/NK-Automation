@@ -2,6 +2,7 @@
 - name: Setup server
   hosts: all
   become: yes
+  become_user: root
 
   vars:
     docker_convenience_script: curl -fsSL get.docker.com | sh
