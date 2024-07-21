@@ -25,7 +25,8 @@
           - htop
           - tmux
           - jq
-        state: present
+          - dnsutils
+        state: latest
   
     - name: Get latest release info from GitHub for fastfetch
       uri:
